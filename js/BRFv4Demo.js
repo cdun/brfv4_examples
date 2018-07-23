@@ -77,6 +77,7 @@ brfv4Example.start = function() {
 
 		"js/libs/createjs/easeljs.min.js",						// canvas drawing lib
 		"js/libs/threejs/three.min.js",							// ThreeJS: a 3D engine
+		"js/libs/threejs/GLTFLoader.js",							// ThreeJS: a 3D engine
 
 		"js/utils/BRFv4DOMUtils.js",							// DOM handling
 		"js/utils/BRFv4Stats.js",								// FPS meter
@@ -96,7 +97,7 @@ brfv4Example.start = function() {
 
 		// example to load on startup, others can be chosen via the example chooser GUI.
 
-		"js/examples/face_tracking/track_single_face.js"		// start with this example
+		"js/examples/face_tracking/CT.js"		// start with this example
 
 	], function() {
 

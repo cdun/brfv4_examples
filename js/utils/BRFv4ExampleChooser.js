@@ -5,6 +5,8 @@
 
 	var urlMap 	= {
 
+		"CT Demo": "js/examples/face_tracking/CT.js",
+
 		"+++ basic - face detection +++":						null,
 
 		"basic - face detection - detect in whole image":		"js/examples/face_detection/detect_in_whole_image.js",
@@ -77,7 +79,7 @@
 			.addHTML("Switch between examples", "Which example do you want to try? Use the drop down to choose another example.").hideTitle("Switch between examples")
 			.addDropDown("_example", labels, onExampleChosen)
 			.hideTitle("_example")
-			.setValuesFromJSON({ "_example": 6}); // "basic - face tracking - track single face"
+			.setValuesFromJSON({ "_example": 0}); // "basic - face tracking - track single face"
 
 		_isFirstSelect = false;
 	}
