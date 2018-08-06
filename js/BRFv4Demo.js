@@ -77,7 +77,10 @@ brfv4Example.start = function() {
 
 		"js/libs/createjs/easeljs.min.js",						// canvas drawing lib
 		"js/libs/threejs/three.min.js",							// ThreeJS: a 3D engine
+		"js/libs/threejs/dat.gui.min.js",							// ThreeJS: a 3D engine
+		"js/libs/threejs/LoaderSupport.js",							// ThreeJS: a 3D engine
 		"js/libs/threejs/GLTFLoader.js",							// ThreeJS: a 3D engine
+		"js/libs/threejs/OBJLoader2.js",							// ThreeJS: a 3D engine
 
 		"js/utils/BRFv4DOMUtils.js",							// DOM handling
 		"js/utils/BRFv4Stats.js",								// FPS meter

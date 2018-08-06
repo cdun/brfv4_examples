@@ -15,16 +15,17 @@
     t3d.stage       = canvas;
     t3d.scene       = new THREE.Scene();
 
-    t3d.camera      = new THREE.OrthographicCamera(
-      t3d.stage.width  / -2, t3d.stage.width  / 2,
-      t3d.stage.height /  2, t3d.stage.height / -2,  50, 10000 );
+    t3d.camera = new THREE.PerspectiveCamera();
+    // t3d.camera      = new THREE.OrthographicCamera(
+    //   t3d.stage.width  / -2, t3d.stage.width  / 2,
+    //   t3d.stage.height /  2, t3d.stage.height / -2,  50, 10000 );
 
     t3d.renderer    = new THREE.WebGLRenderer(
       {alpha: true, canvas: t3d.stage, antialias: true});
 
     t3d.pointLight  = new THREE.PointLight(0xffffff, 0.75, 10000);
     t3d.baseNodes   = [];
-    t3d.modelZ      = 2000;
+    t3d.modelZ      = 500;
 
     t3d.renderer.setClearColor(0x000000, 0); // the default
     t3d.renderer.setPixelRatio(window.devicePixelRatio);
@@ -76,6 +77,8 @@
       var s   =  (face.scale / 180);
       var x   = -(face.points[27].x - (t3d.renderWidth  * 0.5));
       var y   = -(face.points[27].y - (t3d.renderHeight * 0.5))
+      // var x   = (0 - face.points[27].x * 0.5) + (t3d.renderWidth * 0.5);
+      // var y   = (0 - face.points[27].y * 0.5);
         - ((Math.abs(ry) / 45.0) * -2.0)
         + ((rx < 0) ? (rx * 0.20) : 0.0);
       var z   =  t3d.modelZ;
@@ -124,16 +127,19 @@
 
     t3d.addBaseNodes(maxFaces);
 
+    window.t3d = t3d;
+
     var containers = t3d.baseNodes;
     var loader = new THREE.ObjectLoader();
 
     loader.load(url, (function(model) {
-      // t3d.model = model;
 
       for(var k = 0; k < containers.length; k++) {
         var mesh = model.clone();
-        mesh.position.set(model.position.x, model.position.y, model.position.z);
-        mesh.material.colorWrite = false;
+        window.occlusionHead = mesh;
+        mesh.position.set(0,0,0);
+        mesh.scale.setScalar(1);
+        // mesh.material.colorWrite = false;
         mesh.renderOrder = 0;
         
         t3d.occlusionObjects.push(mesh);

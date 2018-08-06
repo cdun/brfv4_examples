@@ -1,17 +1,6 @@
 (function(){
 
-    const geometry = new THREE.SphereGeometry( 5, 32, 32 );
-    const material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
-    const sphere = new THREE.Mesh( geometry, material );
     const t3d = brfv4Example.drawing3d.t3d;
-    const facePosition = new THREE.Vector2(0,0);
-    const distance = -10;
-
-    window.sphere = sphere;
-
-    const drawModel = () => {
-        sphere.position.set(facePosition.x, facePosition.y, distance);
-    }
 
     const createVideo = () => {
         // Create video element, append to DOM
@@ -38,9 +27,9 @@
             map: videoTexture
         });
         const mesh = new THREE.Mesh(geometry, basicMat);
-        mesh.position.set(0,-250,0);
+        mesh.position.set(-100,0,0);
         mesh.rotation.set(0,Math.PI,0);
-        mesh.scale.set(200,200,200);
+        mesh.scale.set(100,100,100);
         window.videoMesh = mesh;
         
         t3d.baseNodes.forEach((node) => {
@@ -50,30 +39,26 @@
         })
         
         el.setAttribute('src', '/assets/lips-xs.mp4');
+        el.play();
     }
 
     const create3DNodes = () => {
         // Initialize THREE through t3d.
 
-        // brfv4Example.dom.updateHeadline("Loading");
-        // let loader = new THREE.GLTFLoader();
-        // const SCALE = 1000;
-        // loader.load('/assets/Lipstick.glb', (asset) => {
-        //     brfv4Example.dom.updateHeadline("Loaded");
-        //     // The drawing utils set up a baseNode for each face tracked.
-        //     t3d.baseNodes.forEach((node) => {
-        //         let clone = asset.scene.clone();
-        //         window.lipstick = clone;
+        const SCALE = 843.75;
+        const POSITION = new THREE.Vector3(0,-30, 30);
 
-        //         // Asset contains entire GLTF file, we're after the scene.
-        //         clone.renderOrder = 2;
-        //         clone.position.set(0,0,0)
-        //         clone.scale.set(SCALE,SCALE,SCALE);
-        //         node.add(clone);
-        //     });
+        let gltfLoader = new THREE.GLTFLoader()
+        gltfLoader.load('/assets/Face.glb', (asset) => {
+            t3d.baseNodes.forEach((node) => {
+                const clone = asset.scene.clone();
+                window.face = clone;
 
-        //     t3d.render();
-        // });
+                clone.scale.setScalar(SCALE);
+                clone.position.copy(POSITION);
+                node.add(clone);
+            });
+        });
     }
 
     brfv4Example.initCurrentExample = (brfManager, resolution) => {
@@ -94,18 +79,13 @@
 		brfManager.setFaceTrackingStartParams(	maxFaceSize * 0.20, maxFaceSize * 1.00, 32, 35, 32); // ... tracked
         brfManager.setFaceTrackingResetParams(	maxFaceSize * 0.15, maxFaceSize * 1.00, 40, 55, 32); // ... lost.
 
-        // t3d.loadOcclusionHead("assets/brfv4_occlusion_head.json", 1);
-        // createVideo();
-
-        console.log('Adding sphere to scene');
+        window.t3d = t3d;
         
-        t3d.scene.add(sphere);
-
+        t3d.addBaseNodes(1);
+        createVideo();
     }
 
     brfv4Example.updateCurrentExample = function(brfManager, imageData, draw) {
-
-        drawModel();
 
 		brfManager.update(imageData);
 
@@ -121,7 +101,8 @@
 
 			if(face.state === brfv4.BRFState.FACE_TRACKING) {
 
-				// Draw the 68 facial feature points as reference.
+                // Draw the 68 facial feature points as reference.
+                // Note that this is done in 2D space, hence the Orthographic camera in the original examples.
                 draw.drawVertices(face.vertices, 2.0, false, 0x00a0ff, 0.4);
 
                 // Draw the center of the face.
@@ -129,9 +110,6 @@
                 g.beginFill(createjs.Graphics.getRGB(1,1,1));
                 g.drawCircle(face.translationX, face.translationY, 3);
                 g.endFill();
-
-                // facePosition.set(face.translationX, face.translationY)
-                
                 
                 // Translate the scene
 
